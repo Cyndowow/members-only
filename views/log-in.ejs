@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <%- include("./parts/head") %>
+    <body>
+        <%#- include("./parts/navbar") %>
+        <form action="/log-in" id="submit-form" method="POST">
+            <h1>Log in to Members Only</h1>
+            <div class="input-signup">
+                <label for="username">Username:</label>
+                <input type="text" name="username" id="username" placeholder="Your username" required>
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password" placeholder="Password" required>
+                <% if(messages.error) {%>
+                    <p><% messages.error %></p>
+                <%} %>
+            </div>
+
+            <input type="submit" name="submit" id="submit" value="Log In">
+        </form>
+    </body>
+
+</html>

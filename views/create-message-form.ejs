@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <%- include("./parts/head") %>
+    <body>
+        <%#- include("./parts/navbar") %>
+        <form id = "submit-form" action = "/create-message" method = "POST">
+            <h1>Create a Message</h1>
+            <%if(user.member){%>
+              <div class = "input-field">
+                <label for="create-message-title">Message Title:</label>
+                <input id = "create-message-title" 
+                    name = "title"
+                    type= "text"
+                    placeholder = "Enter a title"
+                >
+                <label for="create-message-body">Your Message:</label>
+                <textarea id = "create-message-body" 
+                    name = "message"
+                    placeholder = "Enter a message"
+                ></textarea>
+                <%if(errors.length > 0){%>
+                  <%errors.map(error => {%>
+                    <p id = "err-msg-create-msg"><%=error.msg%></p>
+                  <%})%>
+                  <%}%>
+                <input type="submit" name="submit" id="submit" value="Send Message">
+            </div>
+            <%} else{%>
+              <p style = "color:rgb(212, 179, 28)">To create messages, you need to be a <a href = "/become-member" style = "text-decoration: none; color:#fff">Member</a>!</p>
+            <%}%>
+        </from>
+    </body>
+</html>

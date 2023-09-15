@@ -2,7 +2,7 @@
 <html>
     <%- include("./parts/head.ejs")%>
     <body>
-        <%- include("./parts/navbar.ejs") %>
+        <%#- include("./parts/navbar.ejs") %>
         <form id="submit-form" method="POST" action="/sign-up">
             <h1>Sign up to Members Only</h1>
             <div class="input-signup">
@@ -13,7 +13,7 @@
                 <label for="username">Username:</label>
                 <input type="text" name="username" id="username" placeholder="Your username">
                 <label for="password">Password:</label>
-                <input type="password" name="password" id="password">
+                <input type="password" name="password" id="password" placeholder="Password">
                 <% if(errors.length > 0) {%>
                     <% errors.forEach(error => {%>
                         <p><%=error.msg %></p>  
