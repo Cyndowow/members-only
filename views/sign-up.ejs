@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <%- include("./parts/head.ejs")%>
+    <body>
+        <%- include("./parts/navbar.ejs") %>
+        <form id="submit-form" method="POST" action="/sign-up">
+            <h1>Sign up to Members Only</h1>
+            <div class="input-signup">
+                <label for="first_name">First Name:</label>
+                <input type="text" name="first_name" id="first_name">
+                <label for="last_name">Last Name:</label>
+                <input type="text" name="last_name" id="last_name">
+                <label for="username">Username:</label>
+                <input type="text" name="username" id="username" placeholder="Your username">
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password">
+                <% if(errors.length > 0) {%>
+                    <% errors.forEach(error => {%>
+                        <p><%=error.msg %></p>  
+                    <%})%>
+                <%}%>
+                <% if(success.length > 0) {%>
+                    <% success.forEach(msg => {%>
+                        <p><% msg.msg %></p>
+                    <%})%>
+                <%}%>
+            </div>
+            <input type="submit" name="submit" id="submit" value="Sign Up">
+        </form>
+    </body>
+</html>
