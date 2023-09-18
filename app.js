@@ -38,34 +38,51 @@ const bcrypt = require("bcryptjs");
 
 // passport
 passport.use(
-  // same Usernames collide
-  new LocalStrategy((username, password, done) => {
-    User.findOne({ username: username.trim() }, (err, user) => {
-      if (err) return done(err);
+  new LocalStrategy(async (username, password, done) => {
+    try {
+      const user = await User.findOne({ username: username });
+      console.log(user);
+      /*const result = await bcrypt.compare(password, user.password);
+      console.log(result);*/
       if (!user) {
         return done(null, false, { message: "Incorrect Username" });
       }
-      bcrypt.compare(password, user.password, (req, res) => {
-        if (res) {
-          //passwords match
+      const result = await bcrypt.compare(password, user.password);
+      if (result === true) {
+        return done(null, user);
+      } else if (result === false) {
+        return done(null, false, { message: "Wrong password." });
+      }
+      /*bcrypt.compare(password, user.password, done, (err, isValid) => {
+        if (err) throw err;
+        if (isValid) {
+          //pw match
           return done(null, user);
         } else {
-          //passwords do not match
+          //pw no match
           return done(null, false, { message: "Incorrect password" });
         }
       });
-    });
+      /*if (user.password !== password) {
+        return done(null, false, { message: "Incorrect password" });
+      }*/
+    } catch (err) {
+      return done(err);
+    }
   })
 );
 
 passport.serializeUser(function (user, done) {
-  done(null, user.id);
+  done(null, user._id);
 });
 
-passport.deserializeUser(function (id, done) {
-  User.findById(id, function (err, user) {
-    done(err, user);
-  });
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id).exec();
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
 });
 
 //middleware
