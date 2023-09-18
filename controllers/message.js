@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const Message = require("../models/message");
 const { body, validationResult } = require("express-validator");
+const asyncHandler = require("express-async-handler");
 
 exports.create_message_get = (req, res) => {
   res.render("create-message-form", {
@@ -21,23 +22,23 @@ exports.create_message_post = [
     .escape()
     .withMessage("Message must have at least 1 character."),
 
-  (req, res, next) => {
+  asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
+    const message = new Message({
+      user: req.user._id,
+      title: req.body.title,
+      message: req.body.message,
+    });
     if (!errors.isEmpty()) {
       res.render("create-message-form", {
         errors: errors.array(),
         user: res.locals.currentUser,
       });
-      const message = new Message({
-        user: req.user._id,
-        title: req.body.title,
-        message: req.body.message,
-      }).save(function (err) {
-        if (err) return next(err);
-        res.redirect("/");
-      });
+    } else {
+      await message.save();
+      res.redirect("/");
     }
-  },
+  }),
 ];
 
 exports.delete_message_get_admin = (req, res) => {
@@ -84,35 +85,33 @@ exports.delete_message_post = (req, res) => {
 };
 
 exports.member_get = (req, res) => {
-  res.render("member", { user: res.locals.currentUser, errMessages: [] });
+  res.render("become-member", {
+    user: res.locals.currentUser,
+    errMessages: [],
+  });
 };
 
-exports.member_post = (req, res, next) => {
-  if (req.body.password !== process.env.MEMBER_PSW) {
-    res.render("member", {
+exports.member_post = asyncHandler(async (req, res, next) => {
+  if (req.body.password !== process.env.MEMBER_PW) {
+    res.render("become-member", {
       errMessages: ["Wrong password"],
       user: res.locals.currentUser,
     });
   } else {
-    User.findByIdAndUpdate(
-      req.user._id,
-      { $set: { member: true } },
-      {},
-      function (err, result) {
-        if (err) return next(err);
-        res.redirect("/");
-      }
-    );
+    await User.findByIdAndUpdate(req.user._id, {
+      $set: { member: true },
+    });
+    res.redirect("/");
   }
-};
+});
 
 exports.admin_get = (req, res) => {
-  res.render("admin", { user: res.locals.currentUser, errMessages: [] });
+  res.render("become-admin", { user: res.locals.currentUser, errMessages: [] });
 };
 
 exports.admin_post = (req, res, next) => {
   if (req.body.password !== process.env.ADMIN_PW) {
-    res.render("admin", {
+    res.render("become-admin", {
       errMessages: ["Wrong password"],
       user: res.locals.currentUser,
     });
