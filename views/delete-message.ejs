@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <%- include("./parts/head.ejs")%>
+  <body>
+    <%#- include("./parts/navbar.ejs")%>
+    <form id = "submit-form" action = "/delete-message/<%=message._id%>" method = "POST">
+          <div id = "delete-field">
+              <h3 id = "delete-form-username"><%=message.user.username%></h3>
+              <div class = "flex-center">
+                <h1><%=message.title%></h1>
+                <p style = "font-size:12px; padding-top:3px"><%=message.post_date_calendar%> | <%=message.post_date_time%></p>
+              </div>
+              <p class = "grey-bg"><%=message.message%></p>
+              <div class = "input-field input-field-psw input-field-psw-smaller">
+                <input id = "password" 
+                    type = "hidden"
+                    name = "password"
+                    value = <%=process.env.DELETE_PSW%>
+                placeholder = "password"/>
+                <button type = "submit">Delete Message</button>
+              </div>
+            </div>
+    </form>
+  </body>
+</html>

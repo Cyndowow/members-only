@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <%- include("./parts/head.ejs")%>
+  <body>
+    <%#- include("./parts/navbar.ejs")%>
+    <form id = "submit-form" action = "/become-admin" method = "POST">
+        <h1>Become a Admin!</h1>
+
+        <%if(!user.admin){%>
+            <div class = "input-field input-field-psw">
+              <input id = "password" 
+                  type = "password"
+                  name = "password"
+                  placeholder = "Enter password"
+              required></textarea>
+              <button type = "submit">Submit</button>
+            </div>
+            <%if(errMessages.length > 0){%>
+              <%errMessages.forEach(message => {%>
+                  <p style = "color:rgb(226, 70, 70); font-size:12px"><%=message%></p>
+              <%})%>
+            <%}%>
+          <%} else{%>
+              <h5 style = "color:rgb(212, 179, 28)">You're already an Admin of Members Only</h5>
+            <%}%>
+
+    </form>
+  </body>
+</html> 

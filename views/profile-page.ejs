@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <%- include("./parts/head.ejs")%>
+  <body>
+    <%#- include("./parts/navbar.ejs")%> 
+    <form id = "profile-page" action = "/update-user/<%=user._id%>" method = "POST">
+        <table id = "profile-info-table">
+            <tr>
+                <td>username: </td>
+                <td><%=user.username%></td>
+            </tr>
+            <tr>
+                <td>joined: </td>
+                <td><%=user.join_date_formatted%></td>
+            </tr>
+            <tr>
+                <td>member:</td>
+                <td><%=user.member%></td>
+            </tr>
+            <tr>
+                <td>admin:</td>
+                <td><%=user.admin%></td>
+            </tr>
+        </table> 
+    </form>
+    <section id = "user-messages">
+        <h3>submitted messages:</h3>
+        <ul>
+            <%if(user_messages.length > 0){%>
+                <%user_messages.map(message => {%> 
+                    <li>
+                        <div><a href = "/delete-message/<%=message._id%>"><%=message.title%></a></div>
+                        <div><%=message.post_date_calendar%> | <%=message.post_date_time%> </div>
+                        <div><a href = "/delete-message/<%=message._id%>"><img src = "/images/trash.svg" alt = "trashcan" /></a></div>
+                    </li>
+                <%})%>
+            <%} else{%>
+                    <h4>You have no messages yet. Click <a href = "/create-message">here</a> to send some</h4>
+                <%}%>
+            </ul>
+    </section>
+  </body>
+</html>

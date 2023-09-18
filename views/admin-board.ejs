@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <%- include("./parts/head.ejs")%>
+  <body>
+    <%#- include("./parts/navbar.ejs")%> 
+    <article id = "admin-board">
+        <section id = "info-section">
+            <h3>Admin Board:</h3>
+            <table id = "admin-table">
+              <tr>
+                  <th>avatar</th>
+                  <th>username</th>
+                  <th>member</th>
+                  <th>admin</th>
+                  <th>join date</th>
+              </tr>
+              <%allUsers.map(user => {%>
+                  <tr id = "user-header">
+                    <td><%=user.username%></td>
+                    <td><%=user.member%></td>
+                    <td><%=user.admin%></td>
+                    <td><%=user.join_date_formatted%></td>
+                  </tr>
+                  <%const hasMSG = allMessages.some(message => {%>
+                    <%return JSON.stringify(message.user) === JSON.stringify(user._id)%>
+                  <%})%>
+                    <%if(hasMSG){%>
+                        <tr style = "color: #d4b31c; font-size:12px">
+                            <th></th>
+                            <th></th>
+                            <th>delete message</th>
+                            <th>message title</th>
+                            <th>post date</th>
+                        </tr>
+                        <%allMessages.map(message => {%>
+                            <%if(JSON.stringify(message.user) === JSON.stringify(user._id)){%>
+                              <tr>
+                                  <td></td>
+                                  <td></td>
+                                  <td><a href = "/delete-message/admin/<%=message._id%>">Delete Message</a></td>
+                                  <td><a href = "/delete-message/admin/<%=message._id%>"><%=message.title%></a></td>
+                                  <td><%=message.post_date_calendar%> | <%=message.post_date_time%> </td>
+                              </tr>
+                            <%}%>
+                        <%})%>
+                    <%} else{%>
+                        <tr><td colspan = "5">this user has no messages yet</td></tr>
+                    <%}%>
+              <%})%>
+        </table>
+        </section>
+    </article>
+  </body>
+</html>
