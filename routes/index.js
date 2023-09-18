@@ -43,7 +43,7 @@ function isAdmin(req, res, next) {
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("index", { title: "Members Only" });
+  res.render("index", { title: "Members Only", user: res.locals.currentUser });
 });
 
 // Auth routes
