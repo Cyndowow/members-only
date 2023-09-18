@@ -4,6 +4,7 @@ const Message = require("../models/message");
 
 const auth_controller = require("../controllers/auth");
 const message_controller = require("../controllers/message");
+const profile_controller = require("../controllers/profile");
 
 //check if user is logged in
 function isLoggedIn(req, res, next) {
@@ -93,5 +94,16 @@ router.post("/become-member", isLoggedIn, message_controller.member_post);
 router.get("/become-admin", isLoggedIn, message_controller.admin_get);
 
 router.post("/become-admin", message_controller.admin_post);
+
+// profile routes
+
+router.get("/user/:id", isLoggedIn, profile_controller.profile_page_get);
+
+router.get(
+  "/admin-board",
+  isLoggedIn,
+  isAdmin,
+  profile_controller.admin_board_get
+);
 
 module.exports = router;
