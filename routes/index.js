@@ -56,4 +56,42 @@ router.get("/sign-up", auth_controller.sign_up_get);
 
 router.post("/sign-up", auth_controller.sign_up_post);
 
+// navbar/message routes
+router.get(
+  "/create-message",
+  isLoggedIn,
+  message_controller.create_message_get
+);
+
+router.post("/create-message", message_controller.create_message_post);
+
+router.get(
+  "/delete-message/admin/:id",
+  isAuthorizedDelete,
+  isLoggedIn,
+  message_controller.delete_message_get_admin
+);
+
+router.get(
+  "/delete-message/:id",
+  isLoggedIn,
+  isAuthorizedDelete,
+  message_controller.delete_message_get
+);
+
+router.post(
+  "/delete-message/:id",
+  isLoggedIn,
+  isAuthorizedDelete,
+  message_controller.delete_message_post
+);
+
+router.get("/become-member", isLoggedIn, message_controller.member_get);
+
+router.post("/become-member", isLoggedIn, message_controller.member_post);
+
+router.get("/become-admin", isLoggedIn, message_controller.admin_get);
+
+router.post("/become-admin", message_controller.admin_post);
+
 module.exports = router;
