@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const Message = require("../models/message");
+const asyncHandler = require("express-async-handler");
 
 const auth_controller = require("../controllers/auth");
 const message_controller = require("../controllers/message");
@@ -16,21 +17,20 @@ function isLoggedIn(req, res, next) {
 }
 
 //check message-delete authentication
-function isAuthorizedDelete(req, res, next) {
-  Message.findOne({ _id: req.params.id })
-    .populate("User")
-    .then((messageOwner) => {
-      const isOwner =
-        JSON.stringify(messageOwner.user._id) === JSON.stringify(req.user.id);
-      if (isOwner || req.user.admin) {
-        next();
-      } else {
-        console.log("Not authorized to delete message.");
-        res.redirect("/");
-      }
-    })
-    .catch((err) => next(err));
-}
+const isAuthorizedDelete = asyncHandler(async (req, res, next) => {
+  const message = await Message.findOne({ _id: req.params.id }).populate(
+    "user"
+  );
+  const isOwner =
+    JSON.stringify(message.user._id) === JSON.stringify(req.user.id);
+  console.log(isOwner);
+  if (isOwner || req.user.admin) {
+    next();
+  } else {
+    console.log("Not authorized to delete message");
+    res.redirect("/");
+  }
+});
 
 //check if user is admin
 function isAdmin(req, res, next) {

@@ -8,7 +8,6 @@
             <h3>Admin Board:</h3>
             <table id = "admin-table">
               <tr>
-                  <th>avatar</th>
                   <th>username</th>
                   <th>member</th>
                   <th>admin</th>
@@ -38,7 +37,7 @@
                                   <td></td>
                                   <td></td>
                                   <td><a href = "/delete-message/admin/<%=message._id%>">Delete Message</a></td>
-                                  <td><a href = "/delete-message/admin/<%=message._id%>"><%=message.title%></a></td>
+                                  <td><%=message.title%></td>
                                   <td><%=message.post_date_calendar%> | <%=message.post_date_time%> </td>
                               </tr>
                             <%}%>

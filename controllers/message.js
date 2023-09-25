@@ -46,7 +46,7 @@ exports.delete_message_get_admin = (req, res) => {
     .populate("user")
     .then((result) => {
       console.log(result);
-      res.render("delete-msg-admin", {
+      res.render("delete-message-admin", {
         user: res.locals.currentUser,
         message: result,
         errMsg: [],
@@ -59,7 +59,7 @@ exports.delete_message_get = (req, res) => {
     .populate("user")
     .then((result) => {
       console.log(result);
-      res.render("delete-msg", {
+      res.render("delete-message", {
         user: res.locals.currentUser,
         message: result,
         errMsg: [],
@@ -73,7 +73,7 @@ exports.delete_message_post = (req, res) => {
       .populate("user")
       .then((result) => {
         console.log(result);
-        res.render("delete-msg-admin", {
+        res.render("delete-message-admin", {
           user: res.locals.currentUser,
           message: result,
           errMsg: [{ msg: "Incorrect password" }],
