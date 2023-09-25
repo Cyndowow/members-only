@@ -109,21 +109,16 @@ exports.admin_get = (req, res) => {
   res.render("become-admin", { user: res.locals.currentUser, errMessages: [] });
 };
 
-exports.admin_post = (req, res, next) => {
+exports.admin_post = asyncHandler(async (req, res, next) => {
   if (req.body.password !== process.env.ADMIN_PW) {
     res.render("become-admin", {
       errMessages: ["Wrong password"],
       user: res.locals.currentUser,
     });
   } else {
-    User.findByIdAndUpdate(
-      req.user._id,
-      { $set: { admin: true } },
-      {},
-      function (err, result) {
-        if (err) return next(err);
-        res.redirect("/admin-board");
-      }
-    );
+    await User.findByIdAndUpdate(req.user._id, {
+      $set: { admin: true },
+    });
+    res.redirect("/admin-board");
   }
-};
+});

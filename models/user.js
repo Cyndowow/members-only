@@ -8,6 +8,7 @@ const UserSchema = new Schema({
   password: { type: String, required: true, minLength: 7 },
   username: { type: String, required: true, minLength: 4 },
   member: { type: Boolean, default: false },
+  admin: { type: Boolean, default: false },
   join_date: { type: Date, default: new Date() },
 });
 

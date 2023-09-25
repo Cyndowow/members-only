@@ -62,14 +62,14 @@ const sign_up_post = [
         user: res.locals.currentUser,
       });
     } else {
-      const hashedPassword = bcrypt.hash(req.body.password, 10, (err) => {
+      /*const hashedPassword = await bcrypt.hash(req.body.password, 10, (err) => {
         if (err) return next(err);
-      });
+      });*/
       const user = new User({
         first_name: req.body.first_name,
         last_name: req.body.last_name,
         username: req.body.username,
-        password: hashedPassword,
+        password: await bcrypt.hash(req.body.password, 10),
       });
 
       await user.save();
