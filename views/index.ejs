@@ -1,13 +1,38 @@
 <!DOCTYPE html>
 <html>
   <%- include("./parts/head.ejs")%>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
   <body>
-    <%- include("./parts/navbar.ejs") %>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <%- include("./parts/navbar.ejs")%>
+    <article id = "message-wall">
+      <%messages.map(message => {%> 
+        <section class = "message">
+          <div class = "flex-wrapper">
+            <h3><%=message.title%></h3>
+            <%if(!user){%>
+               <p><a href = "/sign-up">Sign up</a> and become a member to see this message</p>
+             <%} else{%>
+                <%if(user.member || user.admin){%>
+                  <p style = "line-height: 22px"><%=message.message%></p>
+                <%}else{%>
+                    <p style = "line-height: 25px">
+                      Become a member to see this message! <br>The password is: <span>"$1MP"</span></br>
+                      Or to become an admin just type in <span>"DiscordMod"</span>
+                    </p>
+                  <%}%>
+              <%}%>
+            <div id = "date"><%=message.post_date_calendar%> | <%=message.post_date_time%></div>
+            <div id = "username">
+              <%if(!user || !user.member){%>
+                <a href="/log-in">Log in </a>to see the username
+              <%}else if(user.admin){%>
+                <%=message.user.username%>
+              <%}else{%>
+                <%=message.user.username%>
+              <%}%>
+            </div>
+          </div>
+        </section>
+      <%})%>
+    </article>
   </body>
 </html>

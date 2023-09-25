@@ -42,8 +42,21 @@ function isAdmin(req, res, next) {
 }
 
 /* GET home page. */
-router.get("/", function (req, res, next) {
-  res.render("index", { title: "Members Only", user: res.locals.currentUser });
+router.get("/", async (req, res, next) => {
+  try {
+    const allMessages = await Message.find()
+      .sort([["post_date", "descending"]])
+      .populate("user");
+    console.log("user: " + res.locals.currentUser);
+
+    res.render("index", {
+      title: "Members Only",
+      user: res.locals.currentUser,
+      messages: allMessages,
+    });
+  } catch (err) {
+    return next(err);
+  }
 });
 
 // Auth routes
